@@ -3,6 +3,7 @@
 # Time-stamp: <2019-11-06 15:27:12 vk>
 
 import calendar
+import html
 import logging
 import os
 import re
@@ -79,7 +80,7 @@ class RssMemacs(Memacs):
             else:
                 output = OrgFormat.link(unformatted_link, item['title'])
 
-            note = item['description']
+            note = html.unescape(item['description'])
 
             # converting updated_parsed UTC --> LOCALTIME
             # Karl 2018-09-22 this might be changed due to:
