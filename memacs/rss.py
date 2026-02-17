@@ -73,12 +73,15 @@ class RssMemacs(Memacs):
             unformatted_link = item['link']
             short_link = OrgFormat.link(unformatted_link, "link")
 
-            # if we found a url in title
-            # then append the url in front of subject
-            if re.search("http[s]?://", item['title']) is not None:
-                output = short_link + ": " + item['title']
+            if "title" in item:
+                # if we found a url in title
+                # then append the url in front of subject
+                 if re.search("http[s]?://", item['title']) is not None:
+                     output = short_link + ": " + item['title']
+                 else:
+                     output = OrgFormat.link(unformatted_link, item['title'])
             else:
-                output = OrgFormat.link(unformatted_link, item['title'])
+                output = OrgFormat.link(unformatted_link, "(No title)")
 
             note = html.unescape(item['description'])
 
