@@ -10,3 +10,4 @@ pylast
 pytz
 twython
 pybbdb
+pandoc

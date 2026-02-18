@@ -13,11 +13,16 @@ the internet.
 
 ** Dependencies
 
+*** =feedparser=
 This module uses the Python library [[http://code.google.com/p/feedparser/][feedparser]] which might need to be to be installed before using this module.
 
 When using [[http://www.ubuntu.com/][Ubuntu GNU/Linux]] or any other [[http://www.debian.org/][Debian GNU/Linux]] based
 distribution you can install the package by invoking «apt-get install
 python-feedparser» as the root user.
+
+*** =pandoc=
+This module optionally uses [[https://pandoc.org][Pandoc]] to convert the description of RSS items from HTML to Org sytax.
+Installation differs depending on your environment, for instance ~apt get install pandoc~ or  ~brew install pandoc~.
 
 ** Automatic appending
 
