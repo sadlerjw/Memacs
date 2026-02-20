@@ -125,15 +125,23 @@ class RssMemacs(Memacs):
                         except RuntimeError:
                             # Again, probably just missing Pandoc
                             logging.info("Couldn't convert note to plaintext to generate title; Probably pandoc is not installed.")
-                    title = notePlainText[:self._truncate_description_to_title_length]
-                    
-                    # Find the index of the beginning of the last bit of whitespace
-                    matches = [x for x in re.finditer(r'\s+', title)]
 
-                    if len(matches) > 0:
-                        lastMatch = matches[-1]
-                        if lastMatch:
-                            title = f"{title[:lastMatch.start()]}..."
+                    # The title should be at most this many characters long
+                    if len(notePlainText) > self._truncate_description_to_title_length:
+                        title = notePlainText[:self._truncate_description_to_title_length]
+
+                        # Find the index of the beginning of the last bit
+                        # of whitespace. If we find one, that's where we
+                        # want to truncate. Otherwise we just let it
+                        # truncate in the middle of a word.
+                        matches = [x for x in re.finditer(r'\s+', title)]
+                        if len(matches) > 0:
+                            lastMatch = matches[-1]
+                            if lastMatch:
+                                title = title[:lastMatch.start()]
+
+                        # Lastly, append an ellipsis.
+                        title = f"{title}..."
                 else:
                     logging.debug("Generating \"(No title)\"")
                     title = "(No title)"
