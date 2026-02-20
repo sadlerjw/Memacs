@@ -9,7 +9,7 @@ from collections import OrderedDict
 from urllib.error import HTTPError
 from urllib.error import URLError
 from urllib.request import urlopen
-
+from urllib.request import Request
 
 class CommonReader:
     """
@@ -50,7 +50,7 @@ class CommonReader:
         return None
 
     @staticmethod
-    def get_data_from_url(url):
+    def get_data_from_url(url, user_agent = None):
         """
         reads from a url
 
@@ -58,8 +58,14 @@ class CommonReader:
         @return: returns data
         """
         try:
-            req = urlopen(url, None, 10)
-            return req.read()
+            req = Request(url)
+            
+            if user_agent:
+                req.add_header("User-Agent", user_agent)
+                
+            context = urlopen(req, None, 10)
+            
+            return context.read()
         except HTTPError as e:
             logging.error("HTTPError: %s", e)
             sys.exit(1)

@@ -28,6 +28,13 @@ class CalendarMemacs(Memacs):
         self._parser.add_argument("-c", "--calendar-url", dest="calendar_url",
                         help="url to calendar")
 
+        self._parser.add_argument(
+            # Use -A and --user-agent to mirror how it's done in curl
+            "-A", "--user-agent", dest="user_agent",
+            action="store",
+            default=None,
+            help="User-Agent header to send when fetching the calendar")
+
         self._parser.add_argument("-cf", "--calendar-file",
                                   dest="calendar_file",
                                   help="path to calendar")
@@ -202,7 +209,7 @@ class CalendarMemacs(Memacs):
             data = CommonReader.get_data_from_file(self._args.calendar_file,
             encoding=None)
         elif self._args.calendar_url:
-            data = CommonReader.get_data_from_url(self._args.calendar_url)
+            data = CommonReader.get_data_from_url(self._args.calendar_url, self._args.user_agent)
 
         self.fallback_tz = None
 

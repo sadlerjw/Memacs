@@ -36,6 +36,13 @@ class RssMemacs(Memacs):
            action="store",
            help="path to rss file")
 
+        self._parser.add_argument(
+            # Use -A and --user-agent to mirror how it's done in curl
+            "-A", "--user-agent", dest="user_agent",
+            action="store",
+            default=None,
+            help="User-Agent header to send when fetching from a URL")
+
     def _parser_parse_args(self):
         """
         overwritten method of class Memacs
@@ -130,7 +137,7 @@ class RssMemacs(Memacs):
         if self._args.file:
             data = CommonReader.get_data_from_file(self._args.file)
         elif self._args.url:
-            data = CommonReader.get_data_from_url(self._args.url)
+            data = CommonReader.get_data_from_url(self._args.url, self._args.user_agent)
 
         rss = feedparser.parse(data)
         logging.info("title: %s", rss['feed']['title'])
