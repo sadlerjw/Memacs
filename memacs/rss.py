@@ -106,10 +106,18 @@ class RssMemacs(Memacs):
             if "title" in item:
                 # if we found a url in title
                 # then append the url in front of subject
-                 if re.search("http[s]?://", item['title']) is not None:
-                     output = short_link + ": " + item['title']
-                 else:
-                     output = OrgFormat.link(unformatted_link, item['title'])
+                title = item['title']
+                try:
+                    titleDoc = pandoc.read(title, format="html")
+                    title = pandoc.write(titleDoc, format="org", options=["--wrap=none"])
+                except RuntimeError:
+                    # Again, probably just Pandoc is unavailable
+                    pass
+                
+                if re.search("http[s]?://", title) is not None:
+                    output = short_link + ": " + title
+                else:
+                    output = OrgFormat.link(unformatted_link, title)
             else:
                 if self._skip_no_title:
                     logging.debug("No title for item; skipping")
