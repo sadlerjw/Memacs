@@ -102,7 +102,7 @@ class RssMemacs(Memacs):
             
             try:
                 noteDoc = pandoc.read(noteSource, format="html")
-                note = pandoc.write(noteDoc, format="org")
+                note = pandoc.write(noteDoc, format="org").rstrip()
             except RuntimeError:
                 # Probably Pandoc is not installed.
                 logging.info("Couldn't generate org format from RSS item's description. Probably pandoc is not installed.")
@@ -114,7 +114,7 @@ class RssMemacs(Memacs):
                 title = item['title']
                 try:
                     titleDoc = pandoc.read(title, format="html")
-                    title = pandoc.write(titleDoc, format="org", options=["--wrap=none"])
+                    title = pandoc.write(titleDoc, format="org", options=["--wrap=none"]).rstrip()
                 except RuntimeError:
                     # Again, probably just Pandoc is unavailable
                     pass
@@ -134,7 +134,7 @@ class RssMemacs(Memacs):
                     notePlainText = note
                     if noteDoc:
                         try:
-                            notePlainText = pandoc.write(noteDoc, format="plain")
+                            notePlainText = pandoc.write(noteDoc, format="plain").rstrip()
                         except RuntimeError:
                             # Again, probably just missing Pandoc
                             logging.info("Couldn't convert note to plaintext to generate title; Probably pandoc is not installed.")
