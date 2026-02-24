@@ -93,8 +93,13 @@ class RssMemacs(Memacs):
             unformatted_link = item['link']
             short_link = OrgFormat.link(unformatted_link, "link")
 
-            noteSource = item['description']
+            if "description" in item:
+                noteSource = item['description']
+            else:
+                noteSource = ""
+                
             noteDoc = None
+            
             try:
                 noteDoc = pandoc.read(noteSource, format="html")
                 note = pandoc.write(noteDoc, format="org")
